@@ -7,7 +7,7 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 
     <AppLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Inicio</h2>
+            <h2 class="font-semibold text-xl text-white leading-tight">Inicio</h2>
         </template>
 
         <!-- {{ props.auth.user.id }} -->
