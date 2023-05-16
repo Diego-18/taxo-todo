@@ -14,7 +14,7 @@ const form = useForm({
 </script>
 
 <template>
-    <Head title="Crear TODOS" />
+    <Head title="Crear Tarea" />
 
     <AuthenticatedLayout>
         <template #header>
