@@ -15,9 +15,9 @@ const form = useForm({
 <template>
     <Head title="Todos" />
     <AppLayout>
-        <div class="py-12">
+        <div class="px-12">
             <div class="grid v-screen place-items-center">
-                <div class="mt-3 mb-3 flex">
+                <div class="py-6 flex">
                     <Link :href="route('todos.create')"
                     class="inline-flex items-center justify-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-500 active:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition ease-in-out duration-150 mx-2">
                     Agregar
@@ -25,9 +25,9 @@ const form = useForm({
                 </div>
             </div>
             <div class="py-12">
-                <div class="bg-white grid v-screen mx-6 text-center border-2 rounded-md items-center cstm-card" v-if="todos.length > 0">
-                    <div  v-for="todo in todos" :key="todo.id">
-                        <div class="bg-blue-400 py-5 card-title">
+                <div v-if="todos.length > 0" class="container-card">
+                    <div  v-for="todo in todos" :key="todo.id" class="cstm-card bg-white mx-6 text-center border-2 rounded-md my-5">
+                        <div class="bg-blue-800 py-5 card-title">
                             {{ todo.title }}
                         </div>
                         <div class="py-5">
@@ -62,14 +62,27 @@ const form = useForm({
 </template>
 
 <style scoped>
+
+.container-card{
+    display:flex;
+    align-items: center;
+}
 .cstm-card{
     width: 400px;
     box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+    display:inline-block;
 }
 
 .card-title{
     font-size: 1.5rem;
     color: #fff;
     text-transform: uppercase;
+}
+
+@media (max-width:900px){
+    .container-card{
+        width: 100%;
+        flex-flow: column-reverse;
+    }
 }
 </style>

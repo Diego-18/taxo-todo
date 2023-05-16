@@ -18,11 +18,11 @@ const form = useForm({
 
     <AppLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Editar Tarea</h2>
+            <h2 class="font-semibold text-xl text-white leading-tight">Editar Tarea</h2>
         </template>
 
         <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
                 <div class="p-4 bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <form @submit.prevent="form.patch(route('todos.update', todo.id))"
                     class="mt-6 space-y-6 max-w-xl">
