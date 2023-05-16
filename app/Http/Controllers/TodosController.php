@@ -39,4 +39,10 @@ class TodosController extends Controller
         $todo->update($request->all());
         return redirect('todos');
     }
+
+    public function destroy(Todo $todo)
+    {
+        $todo->delete();
+        return redirect('todos');
+    }
 }
