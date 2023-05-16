@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref,  onMounted  } from 'vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 import ApplicationMark from '@/Components/ApplicationMark.vue';
 import Banner from '@/Components/Banner.vue';
@@ -13,6 +13,8 @@ defineProps({
 });
 
 const showingNavigationDropdown = ref(false);
+const userId = ref(0);
+const lsUserId = ref(0);
 
 const switchToTeam = (team) => {
     router.put(route('current-team.update'), {
@@ -21,6 +23,13 @@ const switchToTeam = (team) => {
         preserveState: false,
     });
 };
+
+onMounted(() => {
+    setTimeout(() => {
+        lsUserId.value = window.localStorage.setItem("userId", userId.value);
+    }, 10000);
+})
+
 
 const logout = () => {
     router.post(route('logout'));
@@ -32,6 +41,10 @@ const logout = () => {
         <Head :title="title" />
 
         <Banner />
+
+        <div class="hidden">{{ userId = $page.props.auth.user.id }}</div>
+
+        <!-- {{ console.log(lsUserId) }} -->
 
         <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
             <nav class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
