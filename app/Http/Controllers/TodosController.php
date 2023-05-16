@@ -27,4 +27,16 @@ class TodosController extends Controller
         $todos->save();
         return redirect('todos');
     }
+
+    public function edit(Todo $todo)
+    {
+        return Inertia::render('Todos/Edit',['todo' => $todo]);
+    }
+
+    public function update(Request $request, Todo $todo)
+    {
+        $request->validate(['title' => 'required|max:100']);
+        $todo->update($request->all());
+        return redirect('todos');
+    }
 }
