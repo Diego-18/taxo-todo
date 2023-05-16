@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref,  onMounted  } from 'vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 import ApplicationMark from '@/Components/ApplicationMark.vue';
 import Banner from '@/Components/Banner.vue';
@@ -13,6 +13,8 @@ defineProps({
 });
 
 const showingNavigationDropdown = ref(false);
+const userId = ref(0);
+const lsUserId = ref(0);
 
 const switchToTeam = (team) => {
     router.put(route('current-team.update'), {
@@ -21,6 +23,13 @@ const switchToTeam = (team) => {
         preserveState: false,
     });
 };
+
+onMounted(() => {
+    setTimeout(() => {
+        lsUserId.value = window.localStorage.setItem("userId", userId.value);
+    }, 10000);
+})
+
 
 const logout = () => {
     router.post(route('logout'));
@@ -32,6 +41,10 @@ const logout = () => {
         <Head :title="title" />
 
         <Banner />
+
+        <div class="hidden">{{ userId = $page.props.auth.user.id }}</div>
+
+        <!-- {{ console.log(lsUserId) }} -->
 
         <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
             <nav class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
@@ -49,7 +62,11 @@ const logout = () => {
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                                    Dashboard
+                                    Inicio
+                                </NavLink>
+
+                                <NavLink :href="route('todos.index')" :active="route().current('todos.index')">
+                                    Tareas
                                 </NavLink>
                             </div>
                         </div>
@@ -60,7 +77,7 @@ const logout = () => {
                                 <Dropdown v-if="$page.props.jetstream.hasTeamFeatures" align="right" width="60">
                                     <template #trigger>
                                         <span class="inline-flex rounded-md">
-                                            <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none focus:bg-gray-50 dark:focus:bg-gray-700 active:bg-gray-50 dark:active:bg-gray-700 transition ease-in-out duration-150">
+                                            <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white dark:text-white bg-white dark:bg-gray-800 hover:text-white dark:hover:text-white focus:outline-none focus:bg-gray-50 dark:focus:bg-gray-700 active:bg-gray-50 dark:active:bg-gray-700 transition ease-in-out duration-150">
                                                 {{ $page.props.auth.user.current_team.name }}
 
                                                 <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -74,7 +91,7 @@ const logout = () => {
                                         <div class="w-60">
                                             <!-- Team Management -->
                                             <template v-if="$page.props.jetstream.hasTeamFeatures">
-                                                <div class="block px-4 py-2 text-xs text-gray-400">
+                                                <div class="block px-4 py-2 text-xs text-white">
                                                     Manage Team
                                                 </div>
 
@@ -91,7 +108,7 @@ const logout = () => {
                                                 <template v-if="$page.props.auth.user.all_teams.length > 1">
                                                     <div class="border-t border-gray-200 dark:border-gray-600" />
 
-                                                    <div class="block px-4 py-2 text-xs text-gray-400">
+                                                    <div class="block px-4 py-2 text-xs text-white">
                                                         Switch Teams
                                                     </div>
 
@@ -124,7 +141,7 @@ const logout = () => {
                                         </button>
 
                                         <span v-else class="inline-flex rounded-md">
-                                            <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none focus:bg-gray-50 dark:focus:bg-gray-700 active:bg-gray-50 dark:active:bg-gray-700 transition ease-in-out duration-150">
+                                            <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white dark:text-white bg-white dark:bg-gray-800 hover:text-white dark:hover:text-white focus:outline-none focus:bg-gray-50 dark:focus:bg-gray-700 active:bg-gray-50 dark:active:bg-gray-700 transition ease-in-out duration-150">
                                                 {{ $page.props.auth.user.name }}
 
                                                 <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -136,24 +153,16 @@ const logout = () => {
 
                                     <template #content>
                                         <!-- Account Management -->
-                                        <div class="block px-4 py-2 text-xs text-gray-400">
-                                            Manage Account
+                                        <div class="block px-4 py-2 text-xs text-white">
+                                            Cuenta de Usuario
                                         </div>
 
-                                        <DropdownLink :href="route('profile.show')">
-                                            Profile
-                                        </DropdownLink>
-
-                                        <DropdownLink v-if="$page.props.jetstream.hasApiFeatures" :href="route('api-tokens.index')">
-                                            API Tokens
-                                        </DropdownLink>
-
-                                        <div class="border-t border-gray-200 dark:border-gray-600" />
+                                        <div class="border-t border-gray-200" />
 
                                         <!-- Authentication -->
                                         <form @submit.prevent="logout">
                                             <DropdownLink as="button">
-                                                Log Out
+                                                Salir
                                             </DropdownLink>
                                         </form>
                                     </template>
@@ -163,7 +172,7 @@ const logout = () => {
 
                         <!-- Hamburger -->
                         <div class="-mr-2 flex items-center sm:hidden">
-                            <button class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out" @click="showingNavigationDropdown = ! showingNavigationDropdown">
+                            <button class="inline-flex items-center justify-center p-2 rounded-md text-white dark:text-white hover:text-white dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-white dark:focus:text-white transition duration-150 ease-in-out" @click="showingNavigationDropdown = ! showingNavigationDropdown">
                                 <svg
                                     class="h-6 w-6"
                                     stroke="currentColor"
@@ -194,7 +203,11 @@ const logout = () => {
                 <div :class="{'block': showingNavigationDropdown, 'hidden': ! showingNavigationDropdown}" class="sm:hidden">
                     <div class="pt-2 pb-3 space-y-1">
                         <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                            Dashboard
+                            Inicio
+                        </ResponsiveNavLink>
+
+                        <ResponsiveNavLink :href="route('todos.index')" :active="route().current('todos.index')">
+                            Tareas
                         </ResponsiveNavLink>
                     </div>
 
@@ -206,28 +219,20 @@ const logout = () => {
                             </div>
 
                             <div>
-                                <div class="font-medium text-base text-gray-800 dark:text-gray-200">
+                                <div class="font-medium text-base text-white dark:text-white">
                                     {{ $page.props.auth.user.name }}
                                 </div>
-                                <div class="font-medium text-sm text-gray-500">
+                                <div class="font-medium text-sm text-white">
                                     {{ $page.props.auth.user.email }}
                                 </div>
                             </div>
                         </div>
 
                         <div class="mt-3 space-y-1">
-                            <ResponsiveNavLink :href="route('profile.show')" :active="route().current('profile.show')">
-                                Profile
-                            </ResponsiveNavLink>
-
-                            <ResponsiveNavLink v-if="$page.props.jetstream.hasApiFeatures" :href="route('api-tokens.index')" :active="route().current('api-tokens.index')">
-                                API Tokens
-                            </ResponsiveNavLink>
-
                             <!-- Authentication -->
                             <form method="POST" @submit.prevent="logout">
                                 <ResponsiveNavLink as="button">
-                                    Log Out
+                                    Salir
                                 </ResponsiveNavLink>
                             </form>
 
@@ -235,7 +240,7 @@ const logout = () => {
                             <template v-if="$page.props.jetstream.hasTeamFeatures">
                                 <div class="border-t border-gray-200 dark:border-gray-600" />
 
-                                <div class="block px-4 py-2 text-xs text-gray-400">
+                                <div class="block px-4 py-2 text-xs text-white">
                                     Manage Team
                                 </div>
 
@@ -252,7 +257,7 @@ const logout = () => {
                                 <template v-if="$page.props.auth.user.all_teams.length > 1">
                                     <div class="border-t border-gray-200 dark:border-gray-600" />
 
-                                    <div class="block px-4 py-2 text-xs text-gray-400">
+                                    <div class="block px-4 py-2 text-xs text-white">
                                         Switch Teams
                                     </div>
 
